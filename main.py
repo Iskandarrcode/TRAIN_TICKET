@@ -13,12 +13,11 @@ def connect_database():
     cursor.execute("use TRAIN")
     
     cursor.execute("""create table if not exists 
-    users(user_id int primary key auto_increment, name varchar(30), surname varchar(30),
+    users (user_id int primary key auto_increment, name varchar(30), surname varchar(30),
     email varchar(50), password varchar(30))""")
     
     cursor.execute("""create table if not exists 
-    train(id int primary key auto_increment, tr_name varchar(50), tr_time date,
-    tr_price int)""")
+    train (id int primary key auto_increment, tr_name varchar(50), tr_qayerdan varchar(60), tr_qachon date, tr_vaqti varchar(60), tr_boshjoy int, narxi int)""")
     
     cursor.execute("""create table if not exists
     orders(order_id int primary key auto_increment, book_id int,user_id int, units int)""")
@@ -67,49 +66,132 @@ class Window(QMainWindow):
         self.btn.setFont(QFont("Montserrat", 10, weight = 80))
         self.btn.setGeometry(1489, 635, 225, 64)
         self.btn.setStyleSheet("""
-            background-color: blue;
+            background-color: #5576ab;
             border-radius: 25px;""")
+        self.btn.clicked.connect(lambda : self.button())
         
         
         # LINE EDITS_____
-        self.ln = QLineEdit(self)
-        self.ln.setGeometry(360, 635,205, 63)
+        self.viloyatlar = ["Toshkent", "Sirdaryo", "Samarqand", "Andijon", "Farg'ona", "Surxondaryo", "Qashqadaryo", "Namangan", "Jizzax", "Buxoro", "Navoyi", "Xorazm", "Nukus"]
+        
+        self.ln = QComboBox(self)
+        self.ln.addItem("From")
+        self.ln.addItems(self.viloyatlar)
+        self.ln.setCurrentIndex(0)
+        self.ln.setGeometry(360, 635,205, 62)
         self.ln.setFont(QFont("Montserrat",14))
-        self.ln.setPlaceholderText("From")
         self.ln.setStyleSheet("""
             background-color: white;
             border-radius: 20px;""")
         
-        self.ln2 = QLineEdit(self)
-        self.ln2.setGeometry(640, 635,205, 63)
+        self.ln2 = QComboBox(self)
+        self.ln2.addItem("To")
+        self.ln2.addItems(self.viloyatlar)
+        self.ln2.setCurrentIndex(0)
+        self.ln2.setGeometry(640, 635,205, 62)
         self.ln2.setFont(QFont("Montserrat",14))
-        self.ln2.setPlaceholderText("To")
         self.ln2.setStyleSheet("""
             background-color: white;
             border-radius: 20px;""")
         
-        self.ln4 = QLineEdit(self)
-        self.ln4.setGeometry(1208, 635,205, 63)
+        self.ln4 = QTextEdit(self)
+        self.ln4.setGeometry(1208, 635,205, 62)
         self.ln4.setFont(QFont("Montserrat",14))
-        self.ln4.setPlaceholderText("Back")
         self.ln4.setStyleSheet("""
             background-color: white;
             border-radius: 20px;""")
         
         self.ln3 = QLineEdit(self)
-        self.ln3.setGeometry(936, 635,205, 63)
+        self.ln3.setGeometry(936, 635,205, 62)
         self.ln3.setFont(QFont("Montserrat",14))
-        self.ln3.setPlaceholderText("There")
         self.ln3.setStyleSheet("""
             background-color: white;
             border-radius: 20px;""")
+        
+        self.lb = QLabel(self)
+        self.lb.setGeometry(645, 580, 205, 62)
+        self.lb.setFont(QFont("Montserrat",14))
+        self.lb.setStyleSheet("""
+            background-color: transparent;""")
+        
+        self.lb2 = QLabel(self)
+        self.lb2.setGeometry(1250, 580, 205, 62)
+        self.lb2.setFont(QFont("Montserrat",14))
+        self.lb2.setStyleSheet("""
+            background-color: transparent;""")
+            
+        self.table()
+        
+    def button(self):
+     
+        if self.ln.currentText() == self.ln2.currentText():
+            self.lb.setText("Qayta kiriting...")
+            
+        else:
+            self.lb.setText("")
+            
+        
     
+    def table(self):
+        if self.takror():
+            return
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob", "Xorazm", "2024-03-28", "15:00", 100, 200000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob2", "Toshkent", "2024-03-28", "10:00", 180, 300000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob3", "Sirdaryo", "2024-03-28", "15:00", 100, 200000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob4", "Qashqadaryo", "2024-03-28", "11:00", 200, 220000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob5", "Surxondaryo", "2024-03-28", "12:00", 500, 270000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob6", "Jizzax", "2024-03-28", "13:00", 160, 260000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob7", "Andijon", "2024-03-28", "14:00", 150, 240000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob8", "Namangan", "2024-03-8", "16:00", 120, 230000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob9", "Buxoro", "2024-04-28", "5:00", 110, 220000)
+        cursor.execute(sql, values)
+        
+        sql = """Insert into train ( tr_name, tr_qayerdan, tr_qachon, tr_vaqti, tr_boshjoy, narxi) values (%s, %s, %s, %s, %s, %s)"""
+        values = ("Afrosiyob10", "Farg'ona", "2024-03-28", "15:30", 130, 210000)
+        cursor.execute(sql, values)
+        
+        con.commit()
+    
+    
+    def takror(self):
+        cursor.execute("Select * from train")
+        data = cursor.fetchall()
+        if len(data) == 0:
+            return False
+        else:
+            return True
         
     def radio_btn1(self):
         self.ln3.setGeometry(936, 635,205, 63)
         
     def radio_btn2(self):
-        self.ln3.setGeometry(936, 635, 410, 63)
+        self.ln3.setGeometry(936, 635, 480, 63)
 
 
        
@@ -153,13 +235,13 @@ class LoginWindow(QWidget):
         self.email_error.setFont(QFont("Montserrat", 9))
         self.email_error.setStyleSheet("color: red")
               
-        self.email_edit = QLineEdit(self)
+        self.email_edit = QLineEdit("i@gmail.com", self)
         self.email_edit.setGeometry(50, 250, 350, 50)
         self.email_edit.setFont(QFont("Montserrat", 12))
         self.email_edit.setPlaceholderText("Email")
         self.email_edit.setStyleSheet("border: 1px solid #00FFFF; border-radius: 10px")
 
-        self.password_edit = QLineEdit(self)
+        self.password_edit = QLineEdit("qwerty1!", self)
         self.password_edit.setGeometry(50, 320, 350, 50)
         self.password_edit.setFont(QFont("Montserrat", 12))
         self.password_edit.setPlaceholderText("Password")
@@ -435,6 +517,7 @@ class RegistrationWindow(QDialog):
         values = (self.__name, self.__surname, self.__email, self.__password)
         cursor.execute(query, values)
         con.commit() 
+
 
 
 if __name__ == "__main__":
